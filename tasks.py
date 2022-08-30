@@ -1,7 +1,7 @@
 # type: ignore
 from invoke import call, task
 
-SOURCES = "task_manager tests"
+SOURCES = "task_manager tests webapp"
 
 
 @task
