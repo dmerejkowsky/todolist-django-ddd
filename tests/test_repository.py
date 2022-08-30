@@ -5,7 +5,7 @@ import pytest
 from task_manager.repositories.in_memory import InMemoryRepository
 from task_manager.repository import Repository as BaseRepository
 from task_manager.tasks import Task
-from todos.repository import Repository as DjangoRepository
+from webapp.todos.repository import Repository as DjangoRepository
 
 
 @pytest.mark.django_db
