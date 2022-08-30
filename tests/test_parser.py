@@ -1,4 +1,4 @@
-from task_manager.commands import Add, Check, UnCheck
+from task_manager.commands import Add, Check, Remove, UnCheck
 from task_manager.parser import parse_command
 
 
@@ -21,3 +21,10 @@ def test_parse_uncheck() -> None:
     command = parse_command(line)
     assert isinstance(command, UnCheck)
     assert command.id == 2
+
+
+def test_parse_remove() -> None:
+    line = "- 3"
+    command = parse_command(line)
+    assert isinstance(command, Remove)
+    assert command.id == 3
