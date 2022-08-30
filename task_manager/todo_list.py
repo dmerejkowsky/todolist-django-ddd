@@ -12,6 +12,9 @@ class TodoList:
     def __init__(self) -> None:
         self._tasks: dict[int, Task] = {}
 
+    def empty(self) -> bool:
+        return bool(self._tasks) is False
+
     def load_tasks(self, tasks: list[Task]) -> None:
         for task in tasks:
             self._tasks[task.id] = task
