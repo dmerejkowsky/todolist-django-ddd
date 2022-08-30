@@ -20,5 +20,9 @@ class Repository(metaclass=abc.ABCMeta):
     def tasks(self) -> list[Task]:
         pass
 
+    @abc.abstractmethod
+    def load_tasks(self, tasks: list[Task]) -> None:
+        pass
+
     def empty(self) -> bool:
         return len(self.tasks()) == 0

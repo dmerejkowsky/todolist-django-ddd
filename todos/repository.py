@@ -14,7 +14,16 @@ class Repository(BaseRepository):
         task.save()
 
     def remove_task(self, id: int) -> None:
-        pass
+        TaskModel.objects.get(id=id).delete()
 
     def tasks(self) -> list[Task]:
-        pass
+        return [
+            Task(id=t.id, description=t.description, done=t.done)
+            for t in TaskModel.objects.all()
+        ]
+
+    def load_tasks(self, tasks: list[Task]) -> None:
+        for task in tasks:
+            TaskModel.objects.create(
+                id=task.id, description=task.description, done=task.done
+            )

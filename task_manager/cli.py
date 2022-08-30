@@ -1,5 +1,7 @@
+from pathlib import Path
+
 from task_manager.parser import parse_command
-from task_manager.repositories.in_memory import InMemoryRepository
+from task_manager.repositories.json_db import JsonDB
 from task_manager.repository import Repository
 
 
@@ -12,7 +14,7 @@ def display_tasks(repository: Repository) -> None:
 
 
 def main() -> None:
-    repository = InMemoryRepository()
+    repository = JsonDB(Path("tasks.json"))
     display_tasks(repository)
     while True:
         line = input("> ")
@@ -21,3 +23,7 @@ def main() -> None:
         command = parse_command(line)
         command.execute(repository)
         display_tasks(repository)
+
+
+if __name__ == "__main__":
+    main()

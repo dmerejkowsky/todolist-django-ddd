@@ -27,3 +27,6 @@ class InMemoryRepository(Repository):
 
     def remove_task(self, id: int) -> None:
         del self._tasks[id]
+
+    def reset(self) -> None:
+        self._tasks = {}
