@@ -1,7 +1,5 @@
-from django.urls import path
-
-from .views import index
+from django.urls import include, path
 
 urlpatterns = [
-    path("", index),
+    path("todos/", include("todos.urls")),
 ]

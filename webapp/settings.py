@@ -28,13 +28,12 @@ DEBUG = True
 ALLOWED_HOSTS: list[str] = []
 
 
-# Application definition
-
 INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "todos",
 ]
 
 MIDDLEWARE = [
