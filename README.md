@@ -18,9 +18,7 @@ In `tests/test_repository.py` we check that both implementations of the `Reposit
 
 ## The Bad
 
-Django requires *two* folders, one for the "project", and an other for the "app".
-
-So here, `task_manager` contains the core stuff, `webapp` the Django project and `todos` the Django app.
+There's a quite a lot of duplication between the tests.
 
 
 ## The Ugly
