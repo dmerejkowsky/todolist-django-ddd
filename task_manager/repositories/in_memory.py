@@ -1,14 +1,8 @@
-from dataclasses import dataclass
+from task_manager.repository import Repository
+from task_manager.tasks import Task
 
 
-@dataclass
-class Task:
-    id: int
-    description: str
-    done: bool
-
-
-class TodoList:
+class InMemoryRepository(Repository):
     def __init__(self) -> None:
         self._tasks: dict[int, Task] = {}
 

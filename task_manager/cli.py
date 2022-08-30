@@ -1,22 +1,23 @@
-from task_manager.todo_list import TodoList
 from task_manager.parser import parse_command
+from task_manager.repositories.in_memory import InMemoryRepository
+from task_manager.repository import Repository
 
 
-def display_todo_list(todo_list: TodoList) -> None:
-    if todo_list.empty():
+def display_tasks(repository: Repository) -> None:
+    if repository.empty():
         print("No tasks yet")
-    for task in todo_list.tasks():
+    for task in repository.tasks():
         check_box = "[x]" if task.done else "[ ]"
         print(task.id, check_box, task.description)
 
 
 def main() -> None:
-    todo_list = TodoList()
-    display_todo_list(todo_list)
+    repository = InMemoryRepository()
+    display_tasks(repository)
     while True:
         line = input("> ")
         if line[0] == "q":
             break
         command = parse_command(line)
-        command.execute(todo_list)
-        display_todo_list(todo_list)
+        command.execute(repository)
+        display_tasks(repository)
