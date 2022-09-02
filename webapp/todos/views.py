@@ -1,5 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 
+from task_manager.commands import Add, Check, Command, Remove, UnCheck
 from webapp import env
 
 
@@ -14,15 +15,17 @@ def create_task(request: HttpRequest) -> HttpResponse:
     if not description:
         return HttpResponse("Missing description in body", status=400)
 
-    env.repository.add_task(description)
+    command = Add(description)
+    command.execute(env.repository)
 
     return HttpResponse("Task created", status=201)
 
 
 def update_task(request: HttpRequest, id: int) -> HttpResponse:
-
     if request.method == "DELETE":
-        env.repository.remove_task(id)
+        remove_command = Remove(id)
+        remove_command.execute(env.repository)
+
         return HttpResponse("Task deleted", status=200)
 
     if request.method != "POST":
@@ -32,5 +35,10 @@ def update_task(request: HttpRequest, id: int) -> HttpResponse:
     if not new_status:
         return HttpResponse("Missing 'done' in body", status=400)
 
-    env.repository.update_task_status(id, done=bool(new_status))
+    if new_status:
+        update_command: Command = Check(id)
+    else:
+        update_command = UnCheck(id)
+
+    update_command.execute(env.repository)
     return HttpResponse("Task updated", status=200)
