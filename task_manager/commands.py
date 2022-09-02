@@ -11,6 +11,8 @@ class Command(metaclass=abc.ABCMeta):
 
 class Add(Command):
     def __init__(self, description: str) -> None:
+        if not description or description.isspace():
+            raise ValueError("Cannot add a task with a blank description")
         self.description = description
 
     def execute(self, repository: Repository) -> None:

@@ -1,3 +1,5 @@
+import pytest
+
 from task_manager.commands import Add, Check, Remove, UnCheck
 from task_manager.repositories.in_memory import InMemoryRepository
 from task_manager.tasks import Task
@@ -66,3 +68,11 @@ def test_remove_task() -> None:
     remove_command.execute(repository)
 
     assert repository.tasks() == [Task(id=1, description="one", done=False)]
+
+
+def test_error_when_trying_to_mark_non_existing_task_as_done() -> None:
+    repository = InMemoryRepository()
+    check_command = Check(id=1)
+
+    with pytest.raises(ValueError):
+        check_command.execute(repository)

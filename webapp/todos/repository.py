@@ -9,7 +9,10 @@ class Repository(BaseRepository):
         TaskModel.objects.create(description=description, done=False)
 
     def update_task_status(self, id: int, done: bool) -> None:
-        task = TaskModel.objects.get(id=id)
+        try:
+            task = TaskModel.objects.get(id=id)
+        except TaskModel.DoesNotExist:
+            raise ValueError(f"No task with id {id}")
         task.done = done
         task.save()
 
