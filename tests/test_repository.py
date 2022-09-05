@@ -1,24 +1,14 @@
-from typing import Type
-
-import pytest
-
 from task_manager.repositories.in_memory import InMemoryRepository
-from task_manager.repository import Repository as BaseRepository
 from task_manager.tasks import Task
-from webapp.todos.repository import Repository as DjangoRepository
 
 
-@pytest.mark.django_db
-@pytest.mark.parametrize("repo_class", [DjangoRepository, InMemoryRepository])
-def test_starts_empty(repo_class: Type[BaseRepository]) -> None:
-    repository = repo_class()
+def test_starts_empty() -> None:
+    repository = InMemoryRepository()
     assert repository.empty()
 
 
-@pytest.mark.django_db
-@pytest.mark.parametrize("repo_class", [DjangoRepository, InMemoryRepository])
-def test_create_task(repo_class: Type[BaseRepository]) -> None:
-    repository = repo_class()
+def test_create_task() -> None:
+    repository = InMemoryRepository()
     repository.add_task("learn python")
 
     (task,) = repository.tasks()
@@ -26,10 +16,8 @@ def test_create_task(repo_class: Type[BaseRepository]) -> None:
     assert not task.done
 
 
-@pytest.mark.django_db
-@pytest.mark.parametrize("repo_class", [DjangoRepository, InMemoryRepository])
-def test_update_task_status(repo_class: Type[BaseRepository]) -> None:
-    repository = repo_class()
+def test_update_task_status() -> None:
+    repository = InMemoryRepository()
     task = Task(id=1, description="some description", done=False)
     repository.load_tasks([task])
     repository.update_task_status(id=1, done=True)
@@ -38,10 +26,8 @@ def test_update_task_status(repo_class: Type[BaseRepository]) -> None:
     assert task.done
 
 
-@pytest.mark.django_db
-@pytest.mark.parametrize("repo_class", [DjangoRepository, InMemoryRepository])
-def test_remove_task(repo_class: Type[BaseRepository]) -> None:
-    repository = repo_class()
+def test_remove_task() -> None:
+    repository = InMemoryRepository()
     task_1 = Task(id=1, description="one", done=False)
     task_2 = Task(id=2, description="two", done=False)
     repository.load_tasks([task_1, task_2])
