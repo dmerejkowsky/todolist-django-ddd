@@ -32,31 +32,27 @@ def test_create_task(app: Flask) -> None:
 
 
 def test_update_task(app: Flask) -> None:
-    with app.test_client() as client:
-        with app.app_context():
-            repo = get_repo()
-            task_1 = Task(id=1, description="one", done=False)
-            task_2 = Task(id=2, description="two", done=False)
-            repo.load_tasks([task_1, task_2])
+    with (app.app_context(), app.test_client() as client):
+        repo = get_repo()
+        task_1 = Task(id=1, description="one", done=False)
+        task_2 = Task(id=2, description="two", done=False)
+        repo.load_tasks([task_1, task_2])
 
-            response = client.post(f"/task/{task_1.id}", json={"done": "True"})
-            assert response.status_code == 200
+        response = client.post(f"/task/{task_1.id}", json={"done": "True"})
+        assert response.status_code == 200
 
-            tasks = repo.tasks()
-            task_1, task_2 = tasks
-            assert task_1.done
-            assert not task_2.done
+        tasks = repo.tasks()
+        task_1, task_2 = tasks
+        assert task_1.done
+        assert not task_2.done
 
 
-"""
-def test_delete_task(client: Any, test_repository: InMemoryRepository) -> None:
-    task_1 = Task(id=1, description="one", done=False)
-    task_2 = Task(id=2, description="two", done=False)
-    test_repository.load_tasks([task_1, task_2])
+def test_delete_task(app: Flask) -> None:
+    with (app.app_context(), app.test_client() as client):
+        repo = get_repo()
+        task_1 = Task(id=1, description="one", done=False)
+        task_2 = Task(id=2, description="two", done=False)
+        repo.load_tasks([task_1, task_2])
 
-    response = client.delete(f"/todos/task/{task_1.id}")
-    assert response.status_code == 200
-
-    tasks = test_repository.tasks()
-    assert tasks == [task_2]
-    """
+        response = client.delete(f"/task/{task_1.id}")
+        assert response.status_code == 200

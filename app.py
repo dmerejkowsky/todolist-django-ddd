@@ -3,7 +3,7 @@ from typing import Tuple
 
 from flask import Flask, Response, current_app, g, jsonify, request
 
-from task_manager.commands import Add, Check, Command, UnCheck
+from task_manager.commands import Add, Check, Command, Remove, UnCheck
 from task_manager.repositories.in_memory import InMemoryRepository
 from task_manager.repositories.json_db import JsonDB
 from task_manager.repository import Repository
@@ -65,5 +65,13 @@ def create_app(testing: bool = False) -> Flask:
         cmd.execute(repo)
 
         return "{}", 200
+
+    @app.route("/task/<int:id>", methods=["DELETE"])
+    def delete_task(id: int) -> str:
+        repo = get_repo()
+        cmd = Remove(id)
+        cmd.execute(repo)
+
+        return "{}"
 
     return app
